@@ -102,6 +102,11 @@ function jinx_config_set {
         fi
     fi
 
+    if [[ "$1" == "config_path" ]]
+    then
+        local JINX_CONFIG_VALUE=$(echo $2 | sed -e "s#/##g")
+    fi
+
     grep -q "$1=.*" $JINX_CONFIG_FILE \
         && sed -i -e "s#$1=.*#$1=$JINX_CONFIG_VALUE#" $JINX_CONFIG_FILE \
         || echo "$1=$JINX_CONFIG_VALUE" >> $JINX_CONFIG_FILE
@@ -280,6 +285,15 @@ function jinx_site_delete {
 # Sanity checks
 #
 
+# Create configuration file if it doesn't exist.
+if [[ ! -f $JINX_CONFIG_FILE ]]
+then
+    echo -e "#\n# .jinxrc\n# Configuration file for jinx\n#\n# Each configuration key must stand on its own line with no comments.\n# The comments above each variable explain their purpose.\n#\n\n# Where you nginx.conf and other files are located. Must end in "/".\nnginx_path=/etc/nginx/\n\n# Where to find the configuration templates for new sites.\n# Gets appended to the nginx path. Must not contain slashes\nconfig_path=configurations\n\n# Which editor to use for editing sites\neditor=nano\n" >> $JINX_CONFIG_FILE
+    echo -e "${COLOR_YELLOW}First run!${FORMAT_END} Creating default configuration in ~/.jinxrc"
+    echo "Pardon the interruption, we will now continue running your command."
+    echo ""
+fi
+
 # We require at least one command
 if [[ -z "$1" ]]
 then
@@ -294,14 +308,6 @@ then
     echo ""
     jinx_help
     exit 0
-fi
-
-# Create configuration file if it doesn't exist.
-if [[ ! -f $JINX_CONFIG_FILE ]]
-then
-    echo -e "#\n# .jinxrc\n# Configuration file for jinx\n#\n# Each configuration key must stand on its own line with no comments.\n# The comments above each variable explain their purpose.\n#\n\n# Where you nginx.conf and other files are located. Must end in "/".\nnginx_path=/etc/nginx/\n\n# Where to find the configuration templates for new sites.\n# Gets appended to the nginx path. Must not contain slashes\nconfig_path=configurations\n\n# Which editor to use for editing sites\neditor=nano\n" >> $JINX_CONFIG_FILE
-    echo -e "${COLOR_YELLOW}No configuration found.${FORMAT_END} Creating default configuration in ~/.jinxrc"
-    echo ""
 fi
 
 # Process arguments in order
