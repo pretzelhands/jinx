@@ -145,6 +145,7 @@ function jinx_site_activate {
     ln -sfn $FILE_PATH $NGINX_PATH/sites-enabled/ > /dev/null
     echo -e "${COLOR_GREEN}Success.${FORMAT_END} Activated site '$1'."
 
+    echo "$2"
     jinx_optional_restart "$2"
 
     exit 0
@@ -270,11 +271,9 @@ function jinx_site_delete {
 
     if [[ "$COMP_DELETE_CONSENT" == "y" || "$COMP_DELETE_CONSENT" == "yes" ]]
     then
-        echo "Deleting"
-        exit 0
-
-        rm $FILE_PATH_ENABLED
+        rm $FILE_PATH_AVAILABLE
         echo -e "${COLOR_GREEN}Success.${FORMAT_END} Site '$1' was deleted."
+        exit 0
     fi
 
     echo -e "${COLOR_RED}Aborting.${FORMAT_END} Did not receive 'y' or 'yes' as answer, so not deleting site."
