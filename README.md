@@ -278,6 +278,9 @@ server {
 
 This is for common questions and other quips I want to add but that didn't fit in anywhere.
 
+#### Is this usable in production?
+I personally use it to run all the ~25 virtual hosts for my freelance business and it has been doing its job well so far. I would still recommend you try it out in a local environment first, though. See how you like it and if you think it's good, put it on your server.
+
 #### What's with the name? Isn't nginx pronounced "engine-x"?
 I'm so glad you asked! And you are indeed correct that the proper pronounciation of "nginx" is "engine-x". However before many, many people told me so, I used to consistently pronounce it as "En-jinx". So I just threw out the "En" and kept the rest. Hence, `jinx`!
 
