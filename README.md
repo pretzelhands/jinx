@@ -40,13 +40,13 @@ You need only run `jinx update` and the tool will handle the rest!
 
 ## Configuring `jinx`
 
-`jinx` has a few configuration options that you should be aware of. When you run `jinx` for the first time it will automatically create a `.jinxrc` in your home directory and display a notice that this has happened. This `.jinxrc` contains some basic configuration to make everything run smoothly.
+`jinx` has a few configuration options that you should be aware of. When you run `jinx` for the first time it will automatically create a `.jinx/config` in your home directory and display a notice that this has happened. This configuration file contains some basic configuration to make everything run smoothly.
 
 A first run looks approximately like this:
 
 ```
 $ jinx start
-First run! Creating default configuration in ~/.jinxrc
+First run! Creating default configuration in ~/.jinx/config
 Pardon the interruption, we will now continue running your command.
 
 Success. Started nginx service on your system.
@@ -75,7 +75,7 @@ This can be useful if you want to do a quick check or if you want to use the val
 
 ### Setting options manually
 
-You can do this if you want to see exactly how everything is set up. Open up `~/.jinxrc` in your favorite editor and off you go. The configuration file is arranged as a set of key-value pairs separated by an equals sign.
+You can do this if you want to see exactly how everything is set up. Open up `~/.jinx/config` in your favorite editor and off you go. The configuration file is arranged as a set of key-value pairs separated by an equals sign.
 
 **NOTE: You must follow the format guidelines stated below yourself if you choose to manually edit this file**
 
