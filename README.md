@@ -31,6 +31,13 @@ $ git clone https://github.com/pretzelhands/jinx.git /tmp/jinx
 $ sudo mv /tmp/jinx/jinx /usr/bin/jinx
 ```
 
+## Updating
+
+jinx will occasionally (once a day) check if a new version is available in this repository. Should this be the 
+case you will receive a little notice on top of the other commands.
+
+You need only run `jinx update` and the tool will handle the rest!
+
 ## Configuring `jinx`
 
 `jinx` has a few configuration options that you should be aware of. When you run `jinx` for the first time it will automatically create a `.jinxrc` in your home directory and display a notice that this has happened. This `.jinxrc` contains some basic configuration to make everything run smoothly.
@@ -86,6 +93,9 @@ You can do this if you want to see exactly how everything is set up. Open up `~/
 * **editor:** This is the editor used to open your configuration files when you use `jinx site edit`.
   You can use any editor you like (e.g. `emacs` or `vim`). I defaulted to nano, because it is the easiest for newcomers.
 
+* **grumpy:** This option can be used to determine whether you want colored output or not. 
+  If you set `grumpy` to `1` the console output will not be colored. By default it is set to 0.
+
 ## Using the commands
 
 To see all commands offered by `jinx`, you can run `jinx help` and it will give you a nicely formatted list:
@@ -97,6 +107,7 @@ Available commands:
 start                                    start nginx service
 restart                                  restart nginx service
 stop                                     stop nginx service
+logs                                     get nginx error logs
 
 site activate <name> [--restart|-r]      activate a site
 site deactivate <name> [--restart|-r]    deactivate a site
@@ -104,13 +115,20 @@ site delete <name> [--yes|-y]            delete a site
 site create <name> [<template>]          create a site from template
 site edit <name>                         edit a site .conf file with editor
 
-config <key>                             get config value from ~/.jinxrc
-config <key> <value>                     set config value in ~/.jinxrc
+config <key>                             get config value from ~/.jinx/config
+config <key> <value>                     set config value in ~/.jinx/config
+
+update                                   update jinx to the latest version
 ```
 
 ### `jinx start|restart|stop`
 
 Does as it says. These commands start, restart or stop your nginx server. You may be asked for your root password, as it is not possible to run an nginx server on port 80 without `sudo` access.
+
+### `jinx logs`
+
+Opens up what it determines to be the nginx error logs you have configured. For this it examines the `error_log` 
+directive in your `nginx.conf`
 
 ### `jinx site activate`
 
@@ -154,14 +172,7 @@ You may also not delete any currently active site, to prevent unexpected breakin
 
 When prompted if you wish to delete your site accepted values are `y` and `yes`. Note that any site you delete will be **remove permanently**. Be cautious and double check!
 
-#### Refusing to delete site
-```
-$ jinx site delete pretzelhands.com
-Careful: Are you sure you want to delete site 'pretzelhands.com'? (y/N): N
-Aborting. Did not receive 'y' or 'yes' as answer, so not deleting site.
-```
-
-#### Accepting to delete site
+#### Deleting a site
 ```
 $ jinx site delete pretzelhands.com
 Careful: Are you sure you want to delete site 'pretzelhands.com'? (y/N): y
@@ -176,16 +187,6 @@ Use this with caution!
 ```
 $ jinx site delete pretzelhands.com --yes
 Success. Site 'pretzelhands.com' was deleted.
-```
-
-#### Attempting to delete an active site
-
-This is what happens when you attempt to delete a site that is currently active.
-
-```
-$ jinx site delete pretzelhands
-ABORTING. Site 'pretzelhands' is currently activated!
-If you really want to delete it, please deactivate the site first.
 ```
 
 ### `jinx site create`
@@ -204,12 +205,6 @@ Success. Site 'my-awesome-website.com' was created and can now be activated.
 ```
 $ jinx site create my-awesome-php-website.com php
 Success. Site 'my-awesome-php-website.com' was created and can now be activated.
-```
-
-#### Trying to create a site with the same name
-```
-$ jinx site create my-awesome-php-website.com php
-Failure. Site 'my-awesome-php-website.com' already exists. Please choose another name.
 ```
 
 ### `jinx site edit`
