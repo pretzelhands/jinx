@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+COLOR_GREEN=`echo "\033[0;32m"`
+FORMAT_END=`echo "\033[0m"`
+
+JINX_TMP="/tmp/jinx"
+JINX_ETC="/usr/local/etc/jinx"
+JINX_BIN="/usr/local/bin/jinx"
+
+JINX_RELEASE=`echo $(curl -s https://api.github.com/repos/pretzelhands/jinx/releases/latest)`
+JINX_TARBALL=`echo "$JINX_RELEASE" | perl -ne 'print $1 if /"tarball_url":\s"([^\"]*)/s'`
+
+mkdir -p $JINX_TMP
+mkdir -p $JINX_TMP/unpacked
+
+mkdir -p $JINX_ETC
+mkdir -p $JINX_ETC/helpers
+mkdir -p $JINX_ETC/modules
+
+curl -L "$JINX_TARBALL" -o "$JINX_TMP/jinx.tar.gz" --silent
+tar xzf "$JINX_TMP/jinx.tar.gz" -C "$JINX_TMP/unpacked" --strip-components 1
+
+mv "$JINX_TMP/unpacked/jinx" "$JINX_BIN"
+mv "$JINX_TMP/unpacked/helpers" "$JINX_ETC"
+mv "$JINX_TMP/unpacked/modules" "$JINX_ETC"
+
+rm -r $JINX_TMP
+
+chmod a+x "$JINX_BIN"

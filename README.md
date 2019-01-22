@@ -14,9 +14,6 @@ Since this is an early release of jinx, it still has some assumptions about your
 
 * **ONLY ON macOS: You have `gnu-sed` installed :** This is because macOS comes delivered with POSIX `sed` by default, which behaves in incompatible ways with GNU `sed`. You can easily [install `gnu-sed` via Homebrew](https://formulae.brew.sh/formula/gnu-sed). Don't forget to alias `gsed` to `sed`
 
-**NOTE: Automatic start, stop and restart currently only work on macOS and Ubuntu**    
-I do not have a lot of experience with other distros, thus the commands interacting directly with the service are currently only available on macOS and Ubuntu. If you want to make them work with your favorite distro, please [add the necessary changes to this function](https://github.com/pretzelhands/jinx/blob/master/jinx#L55) and submit a pull request. Thank you!
-
 ## Installation
 
 For the time being, installation has to be done manually. You can do so as described below. The folder in your `PATH` may vary and doesn't necessarily have to be `/usr/bin`. (I understand if you don't trust random shell scripts)
