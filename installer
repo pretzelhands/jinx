@@ -7,7 +7,7 @@ JINX_TMP="/tmp/jinx"
 JINX_ETC="/usr/local/etc/jinx"
 JINX_BIN="/usr/local/bin/jinx"
 
-JINX_RELEASE=`echo $(curl -s https://api.github.com/repos/pretzelhands/jinx/releases/latest)`
+JINX_RELEASE=`echo $(curl -s https://api.github.com/repos/pretzelhands/jinx/releases/tags/0.3.0)`
 JINX_TARBALL=`echo "$JINX_RELEASE" | perl -ne 'print $1 if /"tarball_url":\s"([^\"]*)/s'`
 
 mkdir -p $JINX_TMP
