@@ -4,7 +4,7 @@
 # General setup
 #
 
-JINX_VERSION="0.2.0"
+JINX_VERSION="0.3.0"
 JINX_FOLDER="/usr/local/etc/jinx"
 
 #

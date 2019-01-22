@@ -14,9 +14,9 @@ COLOR_YELLOW=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;33m"`
 # COLOR_BLUE_LIGHT=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;34m"`
 
 # COLOR_PURPLE=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[0;35m"`
-# COLOR_PURPLE_LIGHT=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;35m"`
+COLOR_PURPLE_LIGHT=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;35m"`
 
-COLOR_CYAN=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[0;36m"`
+# COLOR_CYAN=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[0;36m"`
 # COLOR_CYAN_LIGHT=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;36m"`
 
 # COLOR_GRAY=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[1;30m"`
