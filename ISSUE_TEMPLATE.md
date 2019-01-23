@@ -14,6 +14,6 @@
 
 ### Specifications
 
-* ** `jinx` version:**
-* ** OS and version:**
-* ** nginx version:**
+* **`jinx` version:**
+* **OS and version:**
+* **nginx version:**
