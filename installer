@@ -2,6 +2,7 @@
 
 # Color makes everything nicer
 COLOR_GREEN="\033[0;32m"
+COLOR_ORANGE="\033[0;33m"
 COLOR_PURPLE_LIGHT="\033[1;35m"
 FORMAT_BOLD="\033[1m"
 FORMAT_UNDERLINE="\033[4m"
@@ -15,8 +16,21 @@ JINX_ETC="/usr/local/etc/jinx"
 JINX_BIN="/usr/local/bin/jinx"
 
 # Grab the relevant tarball
-JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/tags/0.3.0-dev"
+JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
+
+echo -n "Checking requirements... "
+
+if [[ "$OSTYPE" == "darwin"* ]] && [[ ! -f "/usr/local/bin/gsed" ]]
+then
+    echo -e "\n\n${COLOR_ORANGE}Hold up! It looks like you're missing GNU sed.${FORMAT_END}"
+    echo -e "Please install GNU sed and try again:\n"
+    echo -e "    ${FORMAT_BOLD}brew install gnu-sed --with-default-names${FORMAT_END}\n"
+
+    exit 1
+fi
+
+echo -e "${COLOR_GREEN}done.${FORMAT_END}"
 
 # Clean up in case an existing jinx installation is there
 [ -d "$JINX_ETC" ] && rm -r $JINX_ETC
