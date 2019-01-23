@@ -19,8 +19,8 @@ then
 # The comments above each variable explain their purpose.
 #
 
-# Where you nginx.conf and other files are located. Must end in /.
-nginx_path=/etc/nginx/
+# Where you nginx.conf and other files are located.
+nginx_path=/etc/nginx
 
 # Where to find the configuration templates for new sites.
 # Gets appended to the nginx path. Must not contain slashes
@@ -127,7 +127,7 @@ function jinx_optional_restart {
 }
 
 function jinx_config_set {
-    local END_OF_PATH
+#    local END_OF_PATH
     local JINX_CONFIG_VALUE="$2"
 
     if [[ -z "$1" ]] || [[ -z "$2" ]]
@@ -136,15 +136,15 @@ function jinx_config_set {
          exit 1
     fi
 
-    if [[ "$1" == "nginx_path" ]]
-    then
-        local END_OF_PATH=$(echo "${2: -1}");
-
-        if [[ "$END_OF_PATH" != "/" ]]
-        then
-            local JINX_CONFIG_VALUE="$2/"
-        fi
-    fi
+#    if [[ "$1" == "nginx_path" ]]
+#    then
+#        local END_OF_PATH=$(echo "${2: -1}");
+#
+#        if [[ "$END_OF_PATH" != "/" ]]
+#        then
+#            local JINX_CONFIG_VALUE="$2/"
+#        fi
+#    fi
 
     if [[ "$1" == "config_path" ]]
     then
@@ -261,8 +261,8 @@ function jinx_site_create {
 
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local CONFIG_PATH=$(jinx_config_get "config_path")
-    local TEMPLATE_PATH="$NGINX_PATH$CONFIG_PATH/"
-    local TEMPLATE_FILE="$TEMPLATE_PATH$CONFIG_TEMPLATE.conf"
+    local TEMPLATE_PATH="$NGINX_PATH/$CONFIG_PATH"
+    local TEMPLATE_FILE="$TEMPLATE_PATH/$CONFIG_TEMPLATE.conf"
     local NEW_FILE_PATH="$NGINX_PATH/sites-available/$1.conf"
 
     if [[ ! -f "$TEMPLATE_FILE" ]]
