@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-function jinx_help {
+jinx_help() {
     echo -e "${FORMAT_BOLD}${FORMAT_UNDERLINE}Available commands:${FORMAT_END}"
     echo -e ""
     echo -e "${COLOR_PURPLE_LIGHT}config <key>${FORMAT_END}                             get config value from ~/.jinx/config"
     echo -e "${COLOR_PURPLE_LIGHT}config <key> <value>${FORMAT_END}                     set config value in ~/.jinx/config"
-    echo -e ""
-    echo -e "${COLOR_PURPLE_LIGHT}version${FORMAT_END}                                  output jinx version number"
-    echo -e "${COLOR_PURPLE_LIGHT}update${FORMAT_END}                                   update to latest version"
     echo -e ""
     echo -e "${COLOR_PURPLE_LIGHT}site activate <name> [--restart|-r]${FORMAT_END}      activate a site"
     echo -e "${COLOR_PURPLE_LIGHT}site deactivate <name> [--restart|-r]${FORMAT_END}    deactivate a site"
@@ -20,15 +17,15 @@ function jinx_help {
     echo -e "${COLOR_PURPLE_LIGHT}stop${FORMAT_END}                                     stop nginx service"
     echo -e "${COLOR_PURPLE_LIGHT}logs${FORMAT_END}                                     get nginx error logs"
     echo ""
+    echo -e "${COLOR_PURPLE_LIGHT}version${FORMAT_END}                                  output jinx version number"
+    echo -e "${COLOR_PURPLE_LIGHT}update${FORMAT_END}                                   update to latest version"
+    echo -e "${COLOR_PURPLE_LIGHT}uninstall${FORMAT_END}                                uninstall jinx (aw!)"
+    echo ""
 }
 
 
 # Various useful getter functions
 
-function jinx_get_json_value {
-    echo $(echo $1 | python "$JINX_FOLDER/helpers/get_json_value.py" $2)
-}
-
-function jinx_get_yesterday_timestamp {
-    echo $(python "$JINX_FOLDER/helpers/get_yesterday_timestamp.py")
+jinx_get_yesterday_timestamp() {
+    echo $(python "$JINX_ETC/helpers/get_yesterday_timestamp.py")
 }

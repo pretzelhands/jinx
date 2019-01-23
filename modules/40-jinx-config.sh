@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function jinx_config_set {
+jinx_config_set() {
     local JINX_CONFIG_VALUE="$2"
 
     if [[ -z "$1" ]] || [[ -z "$2" ]]
@@ -22,7 +22,7 @@ function jinx_config_set {
     exit 0
 }
 
-function jinx_config_get {
+jinx_config_get() {
     if [[ -z "$1" ]]
     then
          echo -e "${COLOR_RED}Failure.${FORMAT_END} Please specify a configuration key."

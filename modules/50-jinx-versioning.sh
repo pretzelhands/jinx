@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-function jinx_latest_version {
-    echo $(curl -s https://api.github.com/repos/pretzelhands/jinx/releases/latest)
-}
-
-function jinx_check_version {
+jinx_check_version() {
     local JINX_LAST_UPDATE_CHECK=$(cat "$JINX_CONFIG_FOLDER/last_update_check")
     local JINX_LAST_UPDATE_LIMIT=$(jinx_get_yesterday_timestamp)
 
@@ -13,8 +9,7 @@ function jinx_check_version {
         return
     fi
 
-    local JINX_LATEST_RELEASE=$(jinx_latest_version)
-    local JINX_LATEST_VERSION=$(jinx_get_json_value "$JINX_LATEST_RELEASE" "tag_name")
+    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tag_name/ {print $4;}')
 
     if [[ "$JINX_VERSION" != "$JINX_LATEST_VERSION" ]]
     then
@@ -23,14 +18,11 @@ function jinx_check_version {
     fi
 }
 
-function jinx_update_version {
+jinx_update_version() {
     echo -n "Grabbing latest release from GitHub... "
 
     # Relevant files and folders.
     local JINX_EXECUTABLE=$(which jinx)
-    local JINX_TMP="/tmp/jinx"
-    local JINX_ETC="/usr/local/etc/jinx"
-    local JINX_BIN="/usr/local/bin/jinx"
 
     # Grab the relevant tarball
     local JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
@@ -75,4 +67,25 @@ function jinx_update_version {
     echo -n "Cleaning up... "
     rm -r $JINX_TMP
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+}
+
+jinx_uninstall() {
+    if [[ $1 == "-y" ]] || [[ $1 == "--yes" ]]
+    then
+        echo -e "\n${COLOR_RED}Time to say goodbye. Uninstalling jinx.${FORMAT_END}"
+        echo -n "Removing modules and executable... "
+
+        rm -r $JINX_ETC
+        rm $JINX_BIN
+
+        echo -e "${COLOR_GREEN}done${FORMAT_END}\n"
+
+        echo -e "Your existing configuration is still preserved in the ~/.jinx folder."
+        echo -e "You can delete this folder if you want.\n"
+
+        exit 0
+    fi
+
+    echo -e "\n${COLOR_ORANGE}Oh no! So sorry to see you go.${FORMAT_END}"
+    echo -e "If you really want to uninstall jinx please run: ${COLOR_PURPLE_LIGHT}jinx uninstall -y${FORMAT_END}\n"
 }

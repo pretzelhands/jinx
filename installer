@@ -15,7 +15,7 @@ JINX_ETC="/usr/local/etc/jinx"
 JINX_BIN="/usr/local/bin/jinx"
 
 # Grab the relevant tarball
-JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
+JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/tags/0.3.0-dev"
 JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
 
 # Clean up in case an existing jinx installation is there

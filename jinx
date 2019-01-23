@@ -5,13 +5,17 @@
 #
 
 JINX_VERSION="0.3.0"
-JINX_FOLDER="/usr/local/etc/jinx"
 JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 
 #
-# Configuration setup
+# Important directories and files
 #
 
+JINX_TMP="/tmp/jinx"
+JINX_ETC="/usr/local/etc/jinx"
+JINX_BIN="/usr/local/bin/jinx"
+
+# Configuration setup
 JINX_CONFIG_FOLDER="$HOME/.jinx"
 JINX_CONFIG_FILE="$JINX_CONFIG_FOLDER/config"
 
@@ -20,13 +24,13 @@ JINX_CONFIG_FILE="$JINX_CONFIG_FOLDER/config"
 # Each piece of functionality has its distinct module
 #
 
-. "$JINX_FOLDER/modules/10-jinx-init.sh"
-. "$JINX_FOLDER/modules/20-jinx-formatting.sh"
-. "$JINX_FOLDER/modules/30-jinx-helpers.sh"
-. "$JINX_FOLDER/modules/40-jinx-config.sh"
-. "$JINX_FOLDER/modules/50-jinx-versioning.sh"
-. "$JINX_FOLDER/modules/60-jinx-site.sh"
-. "$JINX_FOLDER/modules/70-jinx-nginx.sh"
+. "$JINX_ETC/modules/10-jinx-init.sh"
+. "$JINX_ETC/modules/20-jinx-formatting.sh"
+. "$JINX_ETC/modules/30-jinx-helpers.sh"
+. "$JINX_ETC/modules/40-jinx-config.sh"
+. "$JINX_ETC/modules/50-jinx-versioning.sh"
+. "$JINX_ETC/modules/60-jinx-site.sh"
+. "$JINX_ETC/modules/70-jinx-nginx.sh"
 
 #
 # Automatic versioning check
@@ -37,7 +41,7 @@ jinx_check_version
 
 #
 # Command processing loop
-# Builds up to the correct function to call
+# Builds up to the correct functions to call
 #
 
 # We require at least one command
@@ -78,6 +82,9 @@ do
         # Versioning
         update)
             jinx_update_version
+        ;;
+        uninstall)
+            jinx_uninstall $2
         ;;
         version)
             echo -e "$JINX_VERSION"

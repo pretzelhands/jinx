@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-function jinx_optional_restart {
+jinx_optional_restart() {
     case "$1" in
         --restart|-r) jinx_nginx_service "restart";;
     esac
 }
 
-function jinx_site_activate {
+jinx_site_activate() {
     if [[ -z "$1" ]]
     then
          echo -e "${COLOR_RED}Failure.${FORMAT_END} Please specify a site name."
@@ -30,7 +30,7 @@ function jinx_site_activate {
     exit 0
 }
 
-function jinx_site_deactivate {
+jinx_site_deactivate() {
     if [[ -z "$1" ]]
     then
          echo -e "${COLOR_RED}Failure.${FORMAT_END} Please specify a site name."
@@ -54,7 +54,7 @@ function jinx_site_deactivate {
     exit 0
 }
 
-function jinx_site_edit {
+jinx_site_edit() {
     if [[ -z "$1" ]]
     then
          echo -e "${COLOR_RED}Failure.${FORMAT_END} Please specify a site name."
@@ -81,7 +81,7 @@ function jinx_site_edit {
     exit 0
 }
 
-function jinx_site_create {
+jinx_site_create() {
     local CONFIG_TEMPLATE="default"
 
     if [[ -z "$1" ]]
@@ -120,7 +120,7 @@ function jinx_site_create {
     exit 0
 }
 
-function jinx_site_delete {
+jinx_site_delete() {
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local FILE_PATH_AVAILABLE="$NGINX_PATH/sites-available/$1.conf"
     local FILE_PATH_ENABLED="$NGINX_PATH/sites-enabled/$1.conf"
