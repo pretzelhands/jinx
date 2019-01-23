@@ -97,8 +97,8 @@ function jinx_site_create {
 
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local CONFIG_PATH=$(jinx_config_get "config_path")
-    local TEMPLATE_PATH="$NGINX_PATH$CONFIG_PATH/"
-    local TEMPLATE_FILE="$TEMPLATE_PATH$CONFIG_TEMPLATE.conf"
+    local TEMPLATE_PATH="$NGINX_PATH/$CONFIG_PATH/"
+    local TEMPLATE_FILE="$TEMPLATE_PATH/$CONFIG_TEMPLATE.conf"
     local NEW_FILE_PATH="$NGINX_PATH/sites-available/$1.conf"
 
     if [[ ! -f "$TEMPLATE_FILE" ]]

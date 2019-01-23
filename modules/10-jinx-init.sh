@@ -13,8 +13,8 @@ then
 # The comments above each variable explain their purpose.
 #
 
-# Where you nginx.conf and other files are located. Must end in /.
-nginx_path=/etc/nginx/
+# Where you nginx.conf and other files are located.
+nginx_path=/etc/nginx
 
 # Where to find the configuration templates for new sites.
 # Gets appended to the nginx path. Must not contain slashes
@@ -35,4 +35,4 @@ EOF
     echo ""
 fi
 
-JINX_IS_GRUMPY=$(grep -oh "grumpy=.*" $JINX_CONFIG_FILE | sed "s/grumpy=//")
+JINX_IS_GRUMPY=$(grep -oh "^grumpy=.*" $JINX_CONFIG_FILE | sed "s/grumpy=//")

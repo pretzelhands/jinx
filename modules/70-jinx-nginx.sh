@@ -23,7 +23,7 @@ function jinx_nginx_service {
 function jinx_nginx_logs {
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local NGINX_CONFIG_FILE="$NGINX_PATH/nginx.conf"
-    local NGINX_LOGS=$(grep -oh "error_log .*" "$NGINX_CONFIG_FILE" | sed "s/^error_log //")
+    local NGINX_LOGS=$(grep -oh "^error_log .*" "$NGINX_CONFIG_FILE" | sed "s/^error_log //")
 
     tail -f $(echo "$NGINX_LOGS" | tr -d ";")
 }

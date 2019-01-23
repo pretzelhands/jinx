@@ -26,11 +26,15 @@ function jinx_check_version {
 function jinx_update_version {
     echo -n "Grabbing latest release from GitHub... "
 
+    # Relevant files and folders.
     local JINX_EXECUTABLE=$(which jinx)
-    local JINX_TMP="/var/tmp/jinx"
-    local JINX_LATEST_RELEASE=$(jinx_latest_version)
-    local JINX_LATEST_TARBALL=$(jinx_get_json_value "$JINX_LATEST_RELEASE" "tarball_url")
-    local JINX_LATEST_VERSION=$(jinx_get_json_value "$JINX_LATEST_RELEASE" "tag_name")
+    local JINX_TMP="/tmp/jinx"
+    local JINX_ETC="/usr/local/etc/jinx"
+    local JINX_BIN="/usr/local/bin/jinx"
+
+    # Grab the relevant tarball
+    local JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
+    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tag_name/ {print $4;}')
 
     if [[ "$JINX_VERSION" == "$JINX_LATEST_VERSION" ]]
     then
@@ -39,17 +43,36 @@ function jinx_update_version {
     fi
 
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
-    echo -n "Grabbing latest tarball from GitHub... "
-    mkdir -p $JINX_TMP
+
+    # Clean up in case an existing jinx installation is there
+    [ -d "$JINX_ETC" ] && rm -r $JINX_ETC
+    [ -f "$JINX_BIN" ] && rm $JINX_BIN
+
+    # Prepare temporary directory
     mkdir -p $JINX_TMP/unpacked
-    curl -L "$JINX_LATEST_TARBALL" -o "$JINX_TMP/jinx.tar.gz" --silent
-    echo -e "${COLOR_GREEN}done.${FORMAT_END}"
 
-    echo -n "Unpacking jinx executable and installing ... "
+    # Create directory for module and helper scripts
+    mkdir -p $JINX_ETC/helpers
+    mkdir -p $JINX_ETC/modules
+
+    # Fetch the tarball
+    echo -n "Grabbing latest tarball from GitHub... "
+    curl -L "$JINX_TARBALL" -o "$JINX_TMP/jinx.tar.gz" --silent
     tar xzf "$JINX_TMP/jinx.tar.gz" -C "$JINX_TMP/unpacked" --strip-components 1
-    mv "$JINX_TMP/unpacked/jinx" "$JINX_EXECUTABLE"
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
 
-    rm -r /var/tmp/jinx
-    exit 0
+    # Move everything to where it belongs
+    echo -n "Installing files... "
+    mv "$JINX_TMP/unpacked/jinx" "$JINX_BIN"
+    mv "$JINX_TMP/unpacked/helpers" "$JINX_ETC"
+    mv "$JINX_TMP/unpacked/modules" "$JINX_ETC"
+
+    # Make the script executable
+    chmod a+x "$JINX_BIN"
+    echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+
+    # Always clean up behind yourself
+    echo -n "Cleaning up... "
+    rm -r $JINX_TMP
+    echo -e "${COLOR_GREEN}done.${FORMAT_END}"
 }

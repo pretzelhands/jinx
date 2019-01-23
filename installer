@@ -15,19 +15,17 @@ JINX_ETC="/usr/local/etc/jinx"
 JINX_BIN="/usr/local/bin/jinx"
 
 # Grab the relevant tarball
-JINX_RELEASE=`echo $(curl -s https://api.github.com/repos/pretzelhands/jinx/releases/latest)`
-JINX_TARBALL=`echo "$JINX_RELEASE" | perl -ne 'print $1 if /"tarball_url":\s"([^\"]*)/s'`
+JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
+JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
 
 # Clean up in case an existing jinx installation is there
 [ -d "$JINX_ETC" ] && rm -r $JINX_ETC
 [ -f "$JINX_BIN" ] && rm $JINX_BIN
 
 # Prepare temporary directory
-mkdir -p $JINX_TMP
 mkdir -p $JINX_TMP/unpacked
 
 # Create directory for module and helper scripts
-mkdir -p $JINX_ETC
 mkdir -p $JINX_ETC/helpers
 mkdir -p $JINX_ETC/modules
 

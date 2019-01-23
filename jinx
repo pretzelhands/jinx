@@ -6,6 +6,7 @@
 
 JINX_VERSION="0.3.0"
 JINX_FOLDER="/usr/local/etc/jinx"
+JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 
 #
 # Configuration setup
