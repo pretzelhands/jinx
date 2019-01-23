@@ -42,7 +42,7 @@ EOF
     echo ""
 fi
 
-JINX_IS_GRUMPY=$(grep -oh "grumpy=.*" $JINX_CONFIG_FILE | sed "s/grumpy=//")
+JINX_IS_GRUMPY=$(grep -oh "^grumpy=.*" $JINX_CONFIG_FILE | sed "s/grumpy=//")
 
 # Define colors and formats for making everything pretty.
 COLOR_RED=`[[ $JINX_IS_GRUMPY -eq 1 ]] && echo "" || echo "\033[0;31m"`
@@ -167,7 +167,7 @@ function jinx_config_get {
          exit 1
     fi
 
-    echo $(grep -oh "$1=.*" $JINX_CONFIG_FILE | sed "s/$1=//")
+    echo $(grep -oh "^$1=.*" $JINX_CONFIG_FILE | sed "s/$1=//")
     exit 0
 }
 
@@ -327,7 +327,7 @@ function jinx_site_delete {
 function jinx_logs {
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local NGINX_CONFIG_FILE="$NGINX_PATH/nginx.conf"
-    local NGINX_LOGS=$(grep -oh "error_log .*" "$NGINX_CONFIG_FILE" | sed "s/^error_log //")
+    local NGINX_LOGS=$(grep -oh "^error_log .*" "$NGINX_CONFIG_FILE" | sed "s/^error_log //")
 
     tail -f $(echo "$NGINX_LOGS" | tr -d ";")
 }
