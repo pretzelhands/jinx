@@ -379,7 +379,6 @@ function jinx_update {
 
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
     echo -n "Grabbing latest tarball from GitHub... "
-    mkdir -p $JINX_TMP
     mkdir -p $JINX_TMP/unpacked
     curl -L "$JINX_LATEST_TARBALL" -o "$JINX_TMP/jinx.tar.gz" --silent
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
