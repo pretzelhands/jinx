@@ -36,6 +36,12 @@ of the code without getting lost. I politely ask you to adhere to the module str
 
 Feel free to add new modules if the functionality you're building doesn't fit anywhere else.
 
+## Technologies used
+
+`jinx` aims to be dependent on as few things as possible. So if you're implementing something, please keep in mind 
+what tools come delivered with an average Linux/macOS install on a developer machine. Using things such as small Python
+scripts, `sed`, `awk`, etc. is fine, but please don't go adding a `package.json` so you can pull in a Node package.
+
 ## Versioning
 
 I try to adhere to [Semantic Versioning](https://semver.org/) as best I can. Things might be a bit different
