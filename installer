@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# Color makes everything nicer
+COLOR_GREEN="\033[0;32m"
+COLOR_ORANGE="\033[0;33m"
+COLOR_PURPLE_LIGHT="\033[1;35m"
+FORMAT_BOLD="\033[1m"
+FORMAT_UNDERLINE="\033[4m"
+FORMAT_END="\033[0m"
+
+echo -e "\n${FORMAT_BOLD}${FORMAT_UNDERLINE}${COLOR_PURPLE_LIGHT}Installing jinx:${FORMAT_END}\n"
+
+# Relevant installation files and folders
+JINX_TMP="/tmp/jinx"
+JINX_ETC="/usr/local/etc/jinx"
+JINX_BIN="/usr/local/bin/jinx"
+
+# Grab the relevant tarball
+JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
+JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
+
+echo -n "Checking requirements... "
+
+if [[ "$OSTYPE" == "darwin"* ]] && [[ ! -f "/usr/local/bin/gsed" ]]
+then
+    echo -e "\n\n${COLOR_ORANGE}Hold up! It looks like you're missing GNU sed.${FORMAT_END}"
+    echo -e "Please install GNU sed and try again:\n"
+    echo -e "    ${FORMAT_BOLD}brew install gnu-sed --with-default-names${FORMAT_END}\n"
+
+    exit 1
+fi
+
+echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+
+# Clean up in case an existing jinx installation is there
+[ -d "$JINX_ETC" ] && rm -r $JINX_ETC
+[ -f "$JINX_BIN" ] && rm $JINX_BIN
+
+# Prepare temporary directory
+mkdir -p $JINX_TMP/unpacked
+
+# Create directory for module and helper scripts
+mkdir -p $JINX_ETC/helpers
+mkdir -p $JINX_ETC/modules
+
+# Fetch the tarball
+echo -n "Grabbing latest tarball from GitHub... "
+curl -L "$JINX_TARBALL" -o "$JINX_TMP/jinx.tar.gz" --silent
+tar xzf "$JINX_TMP/jinx.tar.gz" -C "$JINX_TMP/unpacked" --strip-components 1
+echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+
+# Move everything to where it belongs
+echo -n "Installing files... "
+mv "$JINX_TMP/unpacked/jinx" "$JINX_BIN"
+mv "$JINX_TMP/unpacked/helpers" "$JINX_ETC"
+mv "$JINX_TMP/unpacked/modules" "$JINX_ETC"
+
+# Make the script executable
+chmod a+x "$JINX_BIN"
+echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+
+# Always clean up behind yourself
+echo -n "Cleaning up... "
+rm -r $JINX_TMP
+echo -e "${COLOR_GREEN}done.${FORMAT_END}"
+
+echo -e "\n${FORMAT_BOLD}${COLOR_PURPLE_LIGHT}All done!${FORMAT_END} jinx is now ready to use.\n"

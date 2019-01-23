@@ -6,37 +6,67 @@
 
 jinx is a wrapper script for nginx written entirely in Bash. It helps you manage your sites and configurations in a more streamlined way than working with plain shell commands.
 
+---
+
+#### Table of Contents
+
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Updating](#updating)
+* [Deinstallation](#deinstallation)
+* [Configuring `jinx`](#configuring-jinx)
+    * [Setting options](#setting-options-via-jinx)
+    * [Getting options](#reading-the-value-of-options-with-via-jinx)
+    * [Available options](#available-options)
+* [Using the commands](#using-the-commands)
+    * [`jinx start|restart|stop`](#jinx-startrestartstop)
+    * [`jinx logs`](#jinx-logs)
+    * `jinx site`
+        * [`jinx site activate`](#jinx-site-activate)
+        * [`jinx site deactivate`](#jinx-site-deactivate)
+        * [`jinx site delete`](#jinx-site-delete)
+        * [`jinx site create`](#jinx-site-create)
+        * [`jinx site edit`](#jinx-site-edit)
+* [Templating](#templating)
+    * [Naming of templates](#naming-of-templates)
+    * [Default template](#default-template)
+    * [Replacement variables](#replacement-variables)
+* [Miscellaneous](#miscellaneous)
+* [Contributors](#contributors)
+
+---
+
 ## Prerequisites
 
 Since this is an early release of jinx, it still has some assumptions about your enviroment. Currently these are as follows:
 
 * **Your sites are organized in two folders: `sites-available` and `sites-enabled`**: The former one holding all available sites you could potentially host and the latter holding the sites that are reachable on the web.
 
-* **ONLY ON macOS: You have `gnu-sed` installed :** This is because macOS comes delivered with POSIX `sed` by default, which behaves in incompatible ways with GNU `sed`. You can easily [install `gnu-sed` via Homebrew](https://formulae.brew.sh/formula/gnu-sed). Don't forget to alias `gsed` to `sed`
-
-**NOTE: Automatic start, stop and restart currently only work on macOS and Ubuntu**    
-I do not have a lot of experience with other distros, thus the commands interacting directly with the service are currently only available on macOS and Ubuntu. If you want to make them work with your favorite distro, please [add the necessary changes to this function](https://github.com/pretzelhands/jinx/blob/master/jinx#L55) and submit a pull request. Thank you!
-
 ## Installation
 
-For the time being, installation has to be done manually. You can do so as described below. The folder in your `PATH` may vary and doesn't necessarily have to be `/usr/bin`. (I understand if you don't trust random shell scripts)
+Installation of jinx can be done in one line using the convenient installer script. Just copy and paste this into your terminal and you'll be all set!
 
-**Clone the git repository**
-```bash
-$ git clone https://github.com/pretzelhands/jinx.git /tmp/jinx
+```
+bash <(curl -s https://raw.githubusercontent.com/pretzelhands/jinx/master/installer)
 ```
 
-**Copy the `jinx` script to some folder in your `PATH`**
-```bash
-$ sudo mv /tmp/jinx/jinx /usr/bin/jinx
-```
+If you don't trust using `curl` with remote scripts, you can [inspect the script](https://github.com/pretzelhands/jinx/blob/master/installer) and execute the steps manually.
 
 ## Updating
 
-jinx will occasionally (once a day) check if a new version is available in this repository. Should this be the 
-case you will receive a little notice on top of the other commands.
+jinx will occasionally (once a day) check if a new version is available in this repository. Should this be the case you will receive a little notice on top of the other commands.
+
+If you're ever unsure which version of `jinx` you're running you can check with `jinx version`.
 
 You need only run `jinx update` and the tool will handle the rest!
+
+## Deinstallation
+
+<small>You should probably skip this chapter. 😁</small>
+
+Should you ever wish to uninstall `jinx`, you can do so with `jinx uninstall`.
+You will be asked if you're really sure that this is what you wanted. To complete
+deinstallation run `jinx uninstall -y`
 
 ## Configuring `jinx`
 
@@ -62,6 +92,10 @@ $ jinx config nginx_path /etc/nginx/
 Success. Updated setting 'nginx_path' to '/etc/nginx/'.
 ```
 
+### Setting options manually
+
+You can do this if you want to see exactly how everything is set up. Open up `~/.jinx/config` in your favorite editor and off you go. The configuration file is arranged as a set of key-value pairs separated by an equals sign.
+
 There are a few options you can set. You can find detailed descriptions down below.
 
 ### Reading the value of options with via `jinx`
@@ -73,22 +107,14 @@ $ jinx config nginx_path
 ```
 This can be useful if you want to do a quick check or if you want to use the value in your own script.
 
-### Setting options manually
-
-You can do this if you want to see exactly how everything is set up. Open up `~/.jinx/config` in your favorite editor and off you go. The configuration file is arranged as a set of key-value pairs separated by an equals sign.
-
-**NOTE: You must follow the format guidelines stated below yourself if you choose to manually edit this file**
-
 ### Available options
 
 * **nginx_path:** The root directory of your nginx installation.    
   This is where your `nginx.conf` and `sites-available`/`sites-enabled` directories should reside. 
-  (This setting **must** end in a slash. The `config` command automatically adds one if required)
   
 * **config_path:** This is where `jinx` looks for configuration templates.
   It is a subdirectory of `nginx_path`. By default this directory is set to `configurations` which means `jinx` will look for
-  templates in `/etc/nginx/configurations`. (This setting **must not** contain any slashes. The `config` command will
-  automatically remove them if required)
+  templates in `/etc/nginx/configurations`.
   
 * **editor:** This is the editor used to open your configuration files when you use `jinx site edit`.
   You can use any editor you like (e.g. `emacs` or `vim`). I defaulted to nano, because it is the easiest for newcomers.
@@ -104,10 +130,8 @@ $ jinx help
 
 Available commands:
 
-start                                    start nginx service
-restart                                  restart nginx service
-stop                                     stop nginx service
-logs                                     get nginx error logs
+config <key>                             get config value from ~/.jinx/config
+config <key> <value>                     set config value in ~/.jinx/config
 
 site activate <name> [--restart|-r]      activate a site
 site deactivate <name> [--restart|-r]    deactivate a site
@@ -115,15 +139,19 @@ site delete <name> [--yes|-y]            delete a site
 site create <name> [<template>]          create a site from template
 site edit <name>                         edit a site .conf file with editor
 
-config <key>                             get config value from ~/.jinx/config
-config <key> <value>                     set config value in ~/.jinx/config
+start                                    start nginx service
+restart                                  restart nginx service
+stop                                     stop nginx service
+logs                                     get nginx error logs
 
-update                                   update jinx to the latest version
+version                                  output jinx version number
+update                                   update to latest version
+uninstall                                uninstall jinx (aw!)
 ```
 
 ### `jinx start|restart|stop`
 
-Does as it says. These commands start, restart or stop your nginx server. You may be asked for your root password, as it is not possible to run an nginx server on port 80 without `sudo` access.
+Does as it says. These commands start, restart or stop your nginx server.
 
 ### `jinx logs`
 
@@ -269,7 +297,7 @@ server {
 }
 ```
 
-## Miscelleanous
+## Miscellaneous
 
 This is for common questions and other quips I want to add but that didn't fit in anywhere.
 
@@ -283,3 +311,8 @@ I'm so glad you asked! And you are indeed correct that the proper pronounciation
 
 If you like this project and want to help me out, you can go and [buy me a coffee!](https://paypal.me/pretzelhands/5EUR)
 In case that is not an option you can also help me by sharing this project with your friends and [following me on Twitter](https://twitter.com/_pretzelhands)
+
+## Contributors
+
+* **[Richard 'pretzelhands' Blechinger](https://twitter.com/_pretzelhands)** (Creator/maintainer)
+* **[Vladislav 'click0' Prodan](https://github.com/click0)**
