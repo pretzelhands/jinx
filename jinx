@@ -24,13 +24,13 @@ JINX_CONFIG_FILE="$JINX_CONFIG_FOLDER/config"
 # Each piece of functionality has its distinct module
 #
 
-. "$JINX_ETC/modules/10-jinx-init.sh"
-. "$JINX_ETC/modules/20-jinx-formatting.sh"
-. "$JINX_ETC/modules/30-jinx-helpers.sh"
-. "$JINX_ETC/modules/40-jinx-config.sh"
-. "$JINX_ETC/modules/50-jinx-versioning.sh"
-. "$JINX_ETC/modules/60-jinx-site.sh"
-. "$JINX_ETC/modules/70-jinx-nginx.sh"
+. "modules/10-jinx-init.sh"
+. "modules/20-jinx-formatting.sh"
+. "modules/30-jinx-helpers.sh"
+. "modules/40-jinx-config.sh"
+. "modules/50-jinx-versioning.sh"
+. "modules/60-jinx-site.sh"
+. "modules/70-jinx-nginx.sh"
 
 #
 # Automatic versioning check
