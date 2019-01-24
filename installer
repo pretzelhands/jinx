@@ -19,6 +19,9 @@ JINX_BIN="/usr/local/bin/jinx"
 JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/"tarball_url"/ {print $4;}')
 
+# Detect system variables
+OSTYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
+
 echo -n "Checking requirements... "
 
 if [[ "$OSTYPE" == "darwin"* ]] && [[ ! -f "/usr/local/bin/gsed" ]]
