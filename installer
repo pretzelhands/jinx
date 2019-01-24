@@ -20,9 +20,8 @@ JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest
 JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
 
 echo -n "Checking requirements... "
-OSTYPE=$(uname -s)
 
-if [[ "$OSTYPE" == "Darwin"* ]] && [[ ! -f "/usr/local/bin/gsed" ]]
+if [[ "$OSTYPE" == "darwin"* ]] && [[ ! -f "/usr/local/bin/gsed" ]]
 then
     echo -e "\n\n${COLOR_ORANGE}Hold up! It looks like you're missing GNU sed.${FORMAT_END}"
     echo -e "Please install GNU sed and try again:\n"
