@@ -19,6 +19,9 @@ JINX_BIN="/usr/local/bin/jinx"
 JINX_CONFIG_FOLDER="$HOME/.jinx"
 JINX_CONFIG_FILE="$JINX_CONFIG_FOLDER/config"
 
+# Detect system variables
+OSTYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
+
 #
 # Include all modules
 # Each piece of functionality has its distinct module
