@@ -4,7 +4,7 @@
 # General setup
 #
 
-JINX_VERSION="0.3.0"
+JINX_VERSION="0.3.1"
 JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 
 #
