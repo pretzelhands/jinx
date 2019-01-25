@@ -4,7 +4,7 @@
 # General setup
 #
 
-JINX_VERSION="0.3.0"
+JINX_VERSION="0.3.1"
 JINX_RELEASE_URL="https://api.github.com/repos/pretzelhands/jinx/releases/latest"
 
 #
@@ -18,6 +18,9 @@ JINX_BIN="/usr/local/bin/jinx"
 # Configuration setup
 JINX_CONFIG_FOLDER="$HOME/.jinx"
 JINX_CONFIG_FILE="$JINX_CONFIG_FOLDER/config"
+
+# Detect system variables
+OSTYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 #
 # Include all modules
