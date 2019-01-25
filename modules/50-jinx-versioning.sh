@@ -9,7 +9,7 @@ jinx_check_version() {
         return
     fi
 
-    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tag_name/ {print $4;}')
+    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/"tag_name"/ {print $4;}')
 
     if [[ "$JINX_VERSION" != "$JINX_LATEST_VERSION" ]]
     then
@@ -25,8 +25,8 @@ jinx_update_version() {
     local JINX_EXECUTABLE=$(which jinx)
 
     # Grab the relevant tarball
-    local JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tarball_url/ {print $4;}')
-    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/tag_name/ {print $4;}')
+    local JINX_TARBALL=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/"tarball_url"/ {print $4;}')
+    local JINX_LATEST_VERSION=$(curl -sq ${JINX_RELEASE_URL} | awk -F\" '/"tag_name"/ {print $4;}')
 
     if [[ "$JINX_VERSION" == "$JINX_LATEST_VERSION" ]]
     then
