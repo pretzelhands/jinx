@@ -27,5 +27,12 @@ jinx_help() {
 # Various useful getter functions
 
 jinx_get_yesterday_timestamp() {
-    echo $(python "$JINX_ETC/helpers/get_yesterday_timestamp.py")
+    if [[ "$OSTYPE" == "freebsd" ]] || [[ "$OSTYPE" == "darwin"* ]]
+    then
+        # for FreeBSD and, maybe, MacOS X
+        date -v -1d +%s
+    else
+        # for Linux
+        date +%s --date='-1 day'
+    fi
 }
