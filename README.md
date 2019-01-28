@@ -113,8 +113,8 @@ This can be useful if you want to do a quick check or if you want to use the val
   This is where your `nginx.conf` and `sites-available`/`sites-enabled` directories should reside. 
   
 * **config_path:** This is where `jinx` looks for configuration templates.
-  It is a subdirectory of `nginx_path`. By default this directory is set to `configurations` which means `jinx` will look for
-  templates in `/etc/nginx/configurations`.
+  It is a subdirectory of `nginx_path`. By default this directory is set to `templates` which means `jinx` will look for
+  templates in `/etc/nginx/templates`.
   
 * **editor:** This is the editor used to open your configuration files when you use `jinx site edit`.
   You can use any editor you like (e.g. `emacs` or `vim`). I defaulted to nano, because it is the easiest for newcomers.
@@ -241,11 +241,11 @@ This will open up the chosen site configuration in the text editor of your choic
 
 ## Templating
 
-This first version of `jinx` offers some very limited templating functionality to make creating sites as frictionless as possible. By default `jinx` will look for templates in the `configurations` subdirectory of your `nginx` folder (e.g. `/etc/nginx/configurations`.) This can be changed by [adjusting the `config_path` setting of `jinx`](#available-options).
+This first version of `jinx` offers some very limited templating functionality to make creating sites as frictionless as possible. By default `jinx` will look for templates in the `templates` subdirectory of your `nginx` folder (e.g. `/etc/nginx/templates`.) This can be changed by [adjusting the `config_path` setting of `jinx`](#available-options).
 
 ### Naming of templates
 
-The name of the template is decided by the file name of it. (e.g. a file `/etc/nginx/configurations/php.conf` can be used by invoking the following command
+The name of the template is decided by the file name of it. (e.g. a file `/etc/nginx/templates/php.conf` can be used by invoking the following command
 
 ```
 $ jinx site create mysite.com php
@@ -253,7 +253,7 @@ $ jinx site create mysite.com php
 
 ### Default template
 
-If no special template is passed to `jinx` (`jinx site create mysite.com`), it will look for a default template in `/etc/nginx/configurations/default.conf`, or in whichever folder you have specified for configuration templates.
+If no special template is passed to `jinx` (`jinx site create mysite.com`), it will look for a default template in `/etc/nginx/templates/default.conf`, or in whichever folder you have specified for configuration templates.
 
 ### Replacement variables
 

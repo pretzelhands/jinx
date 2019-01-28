@@ -18,7 +18,7 @@ nginx_path=/etc/nginx
 
 # Where to find the configuration templates for new sites.
 # Gets appended to the nginx path. Must not contain slashes
-config_path=configurations
+config_path=templates
 
 # Which editor to use for editing sites
 editor=nano
