@@ -33,12 +33,22 @@ fi
 # Various useful getter functions
 
 jinx_get_yesterday_timestamp() {
-    if [[ "$OSTYPE" == "freebsd" ]] || [[ "$OSTYPE" == "darwin"* ]]
-    then
-        # for FreeBSD and, maybe, MacOS X
-        date -v -1d +%s
-    else
+    case $OSTYPE in
+        linux)
+            date +%s --date='-1 day'
+        ;;
+        alpine)
+            echo $(($(date +%s) - 86400))
+        ;;
+        darwin)
+            date -v -1d +%s
+        ;;
+        freebsd)
+            date -v -1d +%s
+        ;;
         # for Linux
-        date +%s --date='-1 day'
-    fi
+        *)
+            date +%s --date='-1 day'
+        ;;
+    esac
 }
