@@ -23,6 +23,12 @@ jinx_help() {
     echo ""
 }
 
+# Detect system variables
+OSTYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
+if [[ "$OSTYPE" == "linux" ]] && [[ -e /etc/os-release ]]
+then
+    OSTYPE=$(awk -F= '/^ID=/ {print $2;}' /etc/os-release)
+fi
 
 # Various useful getter functions
 
