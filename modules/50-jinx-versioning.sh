@@ -36,7 +36,7 @@ jinx_update_version() {
 
     echo -e "${COLOR_GREEN}done.${FORMAT_END}"
 
-    # Clean up in case an existing jinx installation is there
+    # Backup in case an existing jinx installation is there
     [ -d "$JINX_ETC" ] && mv $JINX_ETC "$JINX_ETC.backup.$JINX_VERSION"
     [ -f "$JINX_BIN" ] && mv $JINX_BIN "$JINX_BIN.backup.$JINX_VERSION"
 

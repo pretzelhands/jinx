@@ -31,7 +31,6 @@ then
 fi
 
 # Various useful getter functions
-
 jinx_get_yesterday_timestamp() {
     case $OSTYPE in
         linux)
