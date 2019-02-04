@@ -110,7 +110,7 @@ jinx_site_create() {
     local CONFIG_PATH=$(jinx_config_get "config_path")
     local TEMPLATE_PATH="$NGINX_PATH/$CONFIG_PATH/"
     local TEMPLATE_FILE="$TEMPLATE_PATH/$CONFIG_TEMPLATE.conf"
-    local NEW_FILE_PATH="$NGINX_PATH/sites-available/$1.conf"
+    local NEW_FILE_PATH="$NGINX_PATH/sites-available/$DOMAIN.conf"
 
     if [[ ! -f "$TEMPLATE_FILE" ]]
     then
@@ -120,12 +120,12 @@ jinx_site_create() {
 
     if [[ -f "$NEW_FILE_PATH" ]]
     then
-         echo -e "${COLOR_RED}Failure.${FORMAT_END} Site '$1' already exists. Please choose another name."
+         echo -e "${COLOR_RED}Failure.${FORMAT_END} Site '$DOMAIN' already exists. Please choose another name."
          exit 1
     fi
 
     cp "$TEMPLATE_FILE" "$NEW_FILE_PATH"
-    sed -i -e "s/___/$1/g" "$NEW_FILE_PATH"
+    sed -i -e "s/___/$DOMAIN/g" "$NEW_FILE_PATH"
 
     if [[ -n "$IPv4" ]]
     then
