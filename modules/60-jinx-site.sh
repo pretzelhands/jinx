@@ -127,7 +127,17 @@ jinx_site_create() {
     cp "$TEMPLATE_FILE" "$NEW_FILE_PATH"
     sed -i -e "s/___/$1/g" "$NEW_FILE_PATH"
 
-    echo -e "${COLOR_GREEN}Success.${FORMAT_END} Site '$1' was created and can now be activated."
+    if [[ -n "$IPv4" ]]
+    then
+        sed -i -e "s/_IPv4_/$IPv4/g" "$NEW_FILE_PATH"
+    fi
+
+    if [[ -n "$IPv6" ]]
+    then
+        sed -i -e "s/_IPv6_/$IPv6/g" "$NEW_FILE_PATH"
+    fi
+
+    echo -e "${COLOR_GREEN}Success.${FORMAT_END} Site '$DOMAIN' was created and can now be activated."
     exit 0
 }
 
