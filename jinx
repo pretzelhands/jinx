@@ -57,7 +57,7 @@ for arg in "$@"
 do
     case $arg in
         # Utilities
-        help)
+        help | -h | --help)
             jinx_help
             exit 0
         ;;
@@ -86,7 +86,7 @@ do
         uninstall)
             jinx_uninstall $2
         ;;
-        version)
+        version | -v | --version)
             echo -e "$JINX_VERSION"
             exit 0
         ;;
@@ -116,6 +116,18 @@ do
         ;;
 
         # Service management
+        check | -t | --check)
+            jinx_nginx_service "check"
+        ;;
+        start)
+            jinx_nginx_service "start"
+        ;;
+        stop)
+            jinx_nginx_service "stop"
+        ;;
+        reload)
+            jinx_nginx_service "reload"
+        ;;
         restart)
             jinx_nginx_service "restart"
         ;;

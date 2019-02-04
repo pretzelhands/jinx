@@ -141,17 +141,27 @@ site edit <name>                         edit a site .conf file with editor
 
 start                                    start nginx service
 restart                                  restart nginx service
+reload                                   reload nginx service
 stop                                     stop nginx service
 logs                                     get nginx error logs
+check | -t | --check                     check syntax of nginx configs without reboot or reload nginx
 
-version                                  output jinx version number
+version | -v | --version                 output jinx version number
 update                                   update to latest version
 uninstall                                uninstall jinx (aw!)
 ```
 
-### `jinx start|restart|stop`
+### `jinx check|-t|--check`
 
-Does as it says. These commands start, restart or stop your nginx server.
+Test the configuration file: nginx checks the configuration for correct syntax, and then tries to open files referred in the configuration. 
+
+### `jinx reload`
+
+Reload configuration nginx, start the new worker process with a new configuration, gracefully shut down old worker processes.
+
+### `jinx start|stop`
+
+Does as it says. These commands start or stop your nginx server.
 
 ### `jinx logs`
 
