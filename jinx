@@ -104,7 +104,7 @@ do
                 jinx_site_edit $3
             elif [[ "$2" == "create" ]]
             then
-                jinx_site_create $3 $4
+                jinx_site_create $3 $4 $5 $6
             elif [[ "$2" == "delete" ]]
             then
                 jinx_site_delete $3 $4

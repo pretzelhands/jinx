@@ -90,10 +90,21 @@ jinx_site_create() {
          exit 1
     fi
 
-    if [[ ! -z "$2" ]]
-    then
-         local CONFIG_TEMPLATE="$2"
-    fi
+    local DOMAIN=$1
+
+    while [ $# -ne 0 ]
+    do
+        if [[ "$(echo $1 | awk -F= '{print tolower($1)}')" = "ipv4" ]]
+        then
+            local IPv4=$(echo $1 | awk -F= '{print $2}')
+        elif [[ "$(echo $1 | awk -F= '{print tolower($1)}')" = "ipv6" ]]
+        then
+            local IPv6=$(echo $1 | awk -F= '{print $2}')
+        else
+            local CONFIG_TEMPLATE="$1"
+        fi
+        shift
+    done
 
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local CONFIG_PATH=$(jinx_config_get "config_path")
