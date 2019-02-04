@@ -136,7 +136,7 @@ config <key> <value>                     set config value in ~/.jinx/config
 site activate <name> [--restart|-r]      activate a site
 site deactivate <name> [--restart|-r]    deactivate a site
 site delete <name> [--yes|-y]            delete a site
-site create <name> [<template>]          create a site from template
+site create <name> [ipv4=<ipv4 address>] [ipv6=<ipv6 address>] [<template>]          create a site from template
 site edit <name>                         edit a site .conf file with editor
 
 start                                    start nginx service
@@ -296,6 +296,8 @@ server {
     index index.html index.htm;
 }
 ```
+
+Other replacement variables are also available - `_IPv4_` and `_IPv6_`. Through them you can set your desired IPv4 and|or IPv4 address. The case when many IPv4 or IPv6 addresses are assigned, they are not yet implemented.
 
 ## Miscellaneous
 
