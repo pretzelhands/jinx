@@ -3,6 +3,7 @@
 jinx_optional_restart() {
     case "$1" in
         --restart|-r) jinx_nginx_service "restart";;
+        *) jinx_nginx_service "reload";;
     esac
 }
 
@@ -90,16 +91,27 @@ jinx_site_create() {
          exit 1
     fi
 
-    if [[ ! -z "$2" ]]
-    then
-         local CONFIG_TEMPLATE="$2"
-    fi
+    local DOMAIN=$1
+
+    while [ $# -ne 0 ]
+    do
+        if [[ "$(echo $1 | awk -F= '{print tolower($1)}')" = "ipv4" ]]
+        then
+            local IPv4=$(echo $1 | awk -F= '{print $2}')
+        elif [[ "$(echo $1 | awk -F= '{print tolower($1)}')" = "ipv6" ]]
+        then
+            local IPv6=$(echo $1 | awk -F= '{print $2}')
+        else
+            local CONFIG_TEMPLATE="$1"
+        fi
+        shift
+    done
 
     local NGINX_PATH=$(jinx_config_get "nginx_path")
     local CONFIG_PATH=$(jinx_config_get "config_path")
     local TEMPLATE_PATH="$NGINX_PATH/$CONFIG_PATH/"
     local TEMPLATE_FILE="$TEMPLATE_PATH/$CONFIG_TEMPLATE.conf"
-    local NEW_FILE_PATH="$NGINX_PATH/sites-available/$1.conf"
+    local NEW_FILE_PATH="$NGINX_PATH/sites-available/$DOMAIN.conf"
 
     if [[ ! -f "$TEMPLATE_FILE" ]]
     then
@@ -109,14 +121,24 @@ jinx_site_create() {
 
     if [[ -f "$NEW_FILE_PATH" ]]
     then
-         echo -e "${COLOR_RED}Failure.${FORMAT_END} Site '$1' already exists. Please choose another name."
+         echo -e "${COLOR_RED}Failure.${FORMAT_END} Site '$DOMAIN' already exists. Please choose another name."
          exit 1
     fi
 
     cp "$TEMPLATE_FILE" "$NEW_FILE_PATH"
-    sed -i -e "s/___/$1/g" "$NEW_FILE_PATH"
+    sed -i -e "s/___/$DOMAIN/g" "$NEW_FILE_PATH"
 
-    echo -e "${COLOR_GREEN}Success.${FORMAT_END} Site '$1' was created and can now be activated."
+    if [[ -n "$IPv4" ]]
+    then
+        sed -i -e "s/_IPv4_/$IPv4/g" "$NEW_FILE_PATH"
+    fi
+
+    if [[ -n "$IPv6" ]]
+    then
+        sed -i -e "s/_IPv6_/$IPv6/g" "$NEW_FILE_PATH"
+    fi
+
+    echo -e "${COLOR_GREEN}Success.${FORMAT_END} Site '$DOMAIN' was created and can now be activated."
     exit 0
 }
 

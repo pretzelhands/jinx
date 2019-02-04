@@ -136,22 +136,36 @@ config <key> <value>                     set config value in ~/.jinx/config
 site activate <name> [--restart|-r]      activate a site
 site deactivate <name> [--restart|-r]    deactivate a site
 site delete <name> [--yes|-y]            delete a site
-site create <name> [<template>]          create a site from template
+site create <name> [ipv4=<ipv4 address>] [ipv6=<ipv6 address>] [<template>]          create a site from template
 site edit <name>                         edit a site .conf file with editor
 
 start                                    start nginx service
 restart                                  restart nginx service
+reload                                   reload nginx service
 stop                                     stop nginx service
 logs                                     get nginx error logs
+check | -t | --check                     check syntax of nginx configs without reboot or reload nginx
 
-version                                  output jinx version number
+version | -v | --version                 output jinx version number
 update                                   update to latest version
 uninstall                                uninstall jinx (aw!)
 ```
 
-### `jinx start|restart|stop`
+### `jinx check|-t|--check`
 
-Does as it says. These commands start, restart or stop your nginx server.
+Test the configuration file: nginx checks the configuration for correct syntax, and then tries to open files referred in the configuration. 
+
+### `jinx restart`
+
+The sequence of the two commands your nginx server - `service nginx stop` and `service nginx start`. In most cases, a softer command is enough - `jinx reload`
+
+### `jinx reload`
+
+Reload configuration nginx, start the new worker process with a new configuration, gracefully shut down old worker processes.
+
+### `jinx start|stop`
+
+Does as it says. These commands start or stop your nginx server.
 
 ### `jinx logs`
 
@@ -296,6 +310,8 @@ server {
     index index.html index.htm;
 }
 ```
+
+Other replacement variables are also available - `_IPv4_` and `_IPv6_`. Through them you can set your desired IPv4 and|or IPv4 address. The case when many IPv4 or IPv6 addresses are assigned, they are not yet implemented.
 
 ## Miscellaneous
 

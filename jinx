@@ -57,7 +57,7 @@ for arg in "$@"
 do
     case $arg in
         # Utilities
-        help)
+        help | -h | --help)
             jinx_help
             exit 0
         ;;
@@ -86,7 +86,7 @@ do
         uninstall)
             jinx_uninstall $2
         ;;
-        version)
+        version | -v | --version)
             echo -e "$JINX_VERSION"
             exit 0
         ;;
@@ -104,7 +104,7 @@ do
                 jinx_site_edit $3
             elif [[ "$2" == "create" ]]
             then
-                jinx_site_create $3 $4
+                jinx_site_create $3 $4 $5 $6
             elif [[ "$2" == "delete" ]]
             then
                 jinx_site_delete $3 $4
@@ -116,14 +116,20 @@ do
         ;;
 
         # Service management
-        restart)
-            jinx_nginx_service "restart"
+        check | -t | --check)
+            jinx_nginx_service "check"
+        ;;
+        start)
+            jinx_nginx_service "start"
         ;;
         stop)
             jinx_nginx_service "stop"
         ;;
-        start)
-            jinx_nginx_service "start"
+        reload)
+            jinx_nginx_service "reload"
+        ;;
+        restart)
+            jinx_nginx_service "restart"
         ;;
         logs)
             jinx_nginx_logs
