@@ -3,6 +3,7 @@
 jinx_optional_restart() {
     case "$1" in
         --restart|-r) jinx_nginx_service "restart";;
+        *) jinx_nginx_service "reload";;
     esac
 }
 

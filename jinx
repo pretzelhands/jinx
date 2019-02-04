@@ -131,12 +131,6 @@ do
         restart)
             jinx_nginx_service "restart"
         ;;
-        stop)
-            jinx_nginx_service "stop"
-        ;;
-        start)
-            jinx_nginx_service "start"
-        ;;
         logs)
             jinx_nginx_logs
         ;;

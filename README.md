@@ -155,6 +155,10 @@ uninstall                                uninstall jinx (aw!)
 
 Test the configuration file: nginx checks the configuration for correct syntax, and then tries to open files referred in the configuration. 
 
+### `jinx restart`
+
+The sequence of the two commands your nginx server - `service nginx stop` and `service nginx start`. In most cases, a softer command is enough - `jinx reload`
+
 ### `jinx reload`
 
 Reload configuration nginx, start the new worker process with a new configuration, gracefully shut down old worker processes.

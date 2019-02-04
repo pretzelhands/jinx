@@ -2,9 +2,11 @@
 
 jinx_nginx_service() {
     case "$1" in
-        start) nginx ;;
-        stop) nginx -s stop ;;
-        restart) nginx -s reload ;;
+        check) nginx -t ;;
+        start) service nginx start ;;
+        stop) service nginx stop ;;
+        reload) service nginx reload ;;
+        restart) service nginx restart ;;
     esac
 
     if [[ $? -eq 0 ]]
